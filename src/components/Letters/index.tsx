@@ -1,13 +1,9 @@
 import styles from "./styles.module.css"
 
-type Props = {
-  value?: string
-}
-
-export function Letter ( {value = ""}: Props) {
+export function LettersUsed() {
   return(
-    <div className={styles.letter}>
-      <span>{value}</span>
+    <div className={styles.lettersUsed}>
+      <h5>Letras Utilizadas</h5>
     </div>
   )
 }
