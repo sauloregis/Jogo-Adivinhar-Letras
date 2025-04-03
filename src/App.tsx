@@ -4,7 +4,7 @@ import { Input } from "./components/Inputs"
 import { Header } from "./components/Header"
 import { Tip } from "./components/Tip"
 import { Letter } from "./components/Letter"
-import { LettersUsed } from "./components/Letters"
+import { LettersUsed } from "./components/LettersUsed"
 
 export default function App() {
 
