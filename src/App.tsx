@@ -8,12 +8,13 @@ import { LettersUsed, LettersUsedProps } from "./components/LettersUsed"
 import { WORDS, Challenge } from "./utils/words"
 import { useState, useEffect } from "react"
 
+const ATTEMPTS_MARGIN = 5
+
 export default function App() {
   const [score, setScore] = useState(0)	
   const [letter, setLetter] = useState("")
   const [lettersUsed, setLettersUsed] = useState<LettersUsedProps[]>([])
   const [challenge, setChallenge] = useState<Challenge | null>(null)
-
 
   function HandlerRestartGame() {
       alert("Reiniciou o jogo!")
@@ -43,6 +44,7 @@ export default function App() {
     const exists = lettersUsed.find((used) => used.value.toUpperCase() === value)
 
     if (exists) {
+      setLetter("")
       return alert("Você já utilizou a letra " + value) 
     }
 
@@ -59,10 +61,30 @@ export default function App() {
     setLetter("")
   }
   
+  function endGame(message: string) {
+    alert(message)
+    startGame()
+  }
 
   useEffect(() => {
     startGame()
   }, []) 
+
+  useEffect(() => {
+    if(!challenge){
+      return
+    }
+
+    setTimeout(() => {
+      if(score === challenge.word.length){
+        return endGame("Você venceu")
+      }
+
+      if(lettersUsed.length === challenge.word.length + ATTEMPTS_MARGIN){
+        return endGame("Você perdeu, tente novamente!")
+      }
+    }, 200)  
+  }, [score, lettersUsed.length])
 
   if(!challenge){
     return 
@@ -71,7 +93,10 @@ export default function App() {
   return (
     <div className={styles.container}>
       <main>
-        <Header current={score} max={10} onRestart={HandlerRestartGame}/>
+        <Header 
+          current={lettersUsed.length} 
+          max={challenge.word.length + ATTEMPTS_MARGIN} 
+          onRestart={HandlerRestartGame}/>
         <Tip tip={challenge.tip} />
         
         <div className={styles.word}>
